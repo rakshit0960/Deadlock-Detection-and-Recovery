@@ -22,27 +22,18 @@ export const useSimulatorStore = create<SimulatorState>((set) => ({
   processes: [
     { id: 'P1' },
     { id: 'P2' },
-    { id: 'P3' },
-    { id: 'P4' }
   ],
   resources: [
-    { id: 'R1', total: 12, available: 7 },
-    { id: 'R2', total: 8, available: 5 },
-    { id: 'R3', total: 10, available: 6 }
+    { id: 'R1', total: 1, available: 1 },
+    { id: 'R2', total: 1, available: 1 },
   ],
   allocations: [
-    { processId: 'P1', resourceId: 'R1', amount: 2 },
-    { processId: 'P1', resourceId: 'R2', amount: 1 },
-    { processId: 'P2', resourceId: 'R2', amount: 2 },
-    { processId: 'P3', resourceId: 'R1', amount: 3 },
-    { processId: 'P3', resourceId: 'R3', amount: 2 },
-    { processId: 'P4', resourceId: 'R2', amount: 0 }
+    { processId: 'P2', resourceId: 'R1', amount: 1 },
+    { processId: 'P2', resourceId: 'R2', amount: 1 },
   ],
   requests: [
-    { processId: 'P1', resourceId: 'R3', amount: 3 },
-    { processId: 'P2', resourceId: 'R1', amount: 2 },
-    { processId: 'P2', resourceId: 'R3', amount: 1 },
-    { processId: 'P4', resourceId: 'R1', amount: 4 }
+    { processId: 'P1', resourceId: 'R1', amount: 1 },
+    { processId: 'P1', resourceId: 'R2', amount: 1 },
   ],
 
   addProcess: (id) =>

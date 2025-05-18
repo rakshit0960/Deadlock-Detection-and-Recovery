@@ -48,7 +48,7 @@ const AddProcessForm: React.FC = () => {
         Add Process
       </Button>
 
-      <ScrollArea className="h-[200px] w-full rounded-md ">
+      <ScrollArea className="h-[200px] w-full rounded-md border">
         <div className="p-4 flex flex-col gap-2">
           {processes.map(p => (
             <Card key={p.id}>
