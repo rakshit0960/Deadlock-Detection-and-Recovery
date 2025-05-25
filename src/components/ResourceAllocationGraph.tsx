@@ -1,47 +1,102 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { nodeHeight, nodeWidth } from "@/config/ragLayout";
+import useLayoutedElements from "@/hooks/useLayoutedElements";
+import { useDeadlockStore } from "@/store/useDeadlockStore";
+import { useRAGStore } from "@/store/useRAGStore";
 import {
   Background,
   BackgroundVariant,
   Controls,
-  MarkerType,
   ReactFlow,
   ReactFlowProvider,
-  useEdgesState,
-  useNodesState,
+  useReactFlow,
   type Edge,
   type EdgeChange,
   type Node,
-  type NodeChange,
+  type NodeChange
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useCallback, useEffect, useRef, useState, useMemo } from "react";
-import { nodeHeight, nodeWidth } from "../config/ragLayout";
-import { useSimulatorStore } from "../store/useSimulatorStore";
-import { Button } from "@/components/ui/button";
 import { Maximize2Icon, Minimize2Icon } from "lucide-react";
-import { useDeadlockStore } from "@/store/useDeadlockStore";
-
-import useLayoutedElements from "@/hooks/useLayoutedElements";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DetectionControls from "./DetectionControls";
 
 const ResourceAllocationGraphInternal = () => {
+
   const [isFullscreen, setIsFullscreen] = useState(false);
   const graphContainerRef = useRef<HTMLDivElement>(null);
+  const { fitView } = useReactFlow();
 
-  const storeProcesses = useSimulatorStore((s) => s.processes);
-  const storeResources = useSimulatorStore((s) => s.resources);
-  const storeAllocations = useSimulatorStore((s) => s.allocations);
-  const storeRequests = useSimulatorStore((s) => s.requests);
+  // Get RAG state from the global RAG store
+  const ragNodes = useRAGStore((s) => s.nodes);
+  const ragEdges = useRAGStore((s) => s.edges);
+  const updateNodePosition = useRAGStore((s) => s.updateNodePosition);
 
-  // Get deadlock detection results
-  const simulationResult = useDeadlockStore((s) => s.simulationResult);
-  const cycleNodes = useMemo(() => simulationResult?.cycle_nodes || [], [simulationResult]);
 
-  const [nodes, setNodesState, onNodesChangeInternal] = useNodesState<Node>([]);
-  const [edges, setEdgesState, onEdgesChangeInternal] = useEdgesState<Edge>([]);
+  // Get simulation type and current step from Deadlock store
+  const simulationType = useDeadlockStore((s) => s.simulationType);
+  const currentStep = useDeadlockStore((s) => s.currentStep);
+  const matrixSimulationResult = useDeadlockStore((s) => s.matrixSimulationResult);
+  const wfgSimulationResult = useDeadlockStore((s) => s.wfgSimulationResult);
+  const currentSimulationResult = simulationType === 'matrix' ? matrixSimulationResult : wfgSimulationResult;
+
+  const cycleNodes = useMemo(() =>
+    wfgSimulationResult?.cycle_nodes || [],
+    [wfgSimulationResult]
+  );
 
   const { getLayoutedElements } = useLayoutedElements();
+
+  // Refs to track previous nodes and edges for structure change detection
+  const prevNodes = useRef(ragNodes);
+  const prevEdges = useRef(ragEdges);
+
+  // Memoize styled nodes
+  const styledNodes = useMemo(() =>
+    ragNodes.map(node => {
+      const isProcess = node.type === 'process';
+      const inCycle = cycleNodes.includes(node.id);
+
+      return {
+        ...node,
+        style: {
+          width: nodeWidth,
+          height: nodeHeight,
+          borderRadius: isProcess ? "50%" : "12px",
+          border: inCycle
+            ? "3px solid #ef4444"
+            : isProcess
+              ? "3px solid #60a5fa"
+              : "3px solid #34d399",
+          background: inCycle
+            ? "#991b1b"
+            : isProcess
+              ? "#1e3a8a"
+              : "#065f46",
+          boxShadow: "0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3)",
+          display: isProcess ? "flex" : "block",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "#dbeafe",
+          padding: isProcess ? "0" : "4px",
+        },
+        data: {
+          ...node.data,
+          label: isProcess
+            ? node.data.label
+            : (
+              <div className="text-center">
+                <div className="font-bold text-emerald-300">R{node.data.index as number}</div>
+                <div className="text-sm text-emerald-200">{node.data.total as number}</div>
+              </div>
+            ),
+        },
+      };
+    }), [ragNodes, cycleNodes]
+  );
 
   // Handle fullscreen
   const toggleFullscreen = useCallback(() => {
@@ -54,176 +109,85 @@ const ResourceAllocationGraphInternal = () => {
     }
   }, []);
 
-  // Listen for fullscreen changes
+  // Handle fullscreen changes
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
+    const handleFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  // Auto-adjust layout when processes or resources change
+  // Initial load and RAGStore changes
   useEffect(() => {
-    if (storeProcesses.length > 0 || storeResources.length > 0) {
-      const timeoutId = setTimeout(() => {
-        getLayoutedElements({ "elk.algorithm": "layered" });
-      }, 100);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [storeProcesses, storeResources, getLayoutedElements]);
+    // Helper function to check if graph structure changed (ignoring positions)
+    const hasGraphStructureChanged = (prevNodes: Node[], prevEdges: Edge[], newNodes: Node[], newEdges: Edge[]) => {
+      if (prevNodes.length !== newNodes.length || prevEdges.length !== newEdges.length) return true;
 
-  // Auto-adjust layout when allocations or requests change
-  useEffect(() => {
-    if (storeAllocations.length > 0 || storeRequests.length > 0) {
-      const timeoutId = setTimeout(() => {
-        getLayoutedElements({ "elk.algorithm": "layered" });
-      }, 100);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [storeAllocations, storeRequests, getLayoutedElements]);
+      // Check if node IDs or data changed
+      const nodesChanged = newNodes.some((newNode, i) => {
+        const prevNode = prevNodes[i];
+        return !prevNode ||
+          prevNode.id !== newNode.id ||
+          JSON.stringify(prevNode.data) !== JSON.stringify(newNode.data);
+      });
 
-  // Auto-adjust layout when WFG detection runs
-  useEffect(() => {
-    if (simulationResult) {
-      const timeoutId = setTimeout(() => {
-        getLayoutedElements({ "elk.algorithm": "layered" });
-      }, 100);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [simulationResult, getLayoutedElements]);
+      // Check if edge structure changed
+      const edgesChanged = newEdges.some((newEdge, i) => {
+        const prevEdge = prevEdges[i];
+        return !prevEdge ||
+          prevEdge.id !== newEdge.id ||
+          prevEdge.source !== newEdge.source ||
+          prevEdge.target !== newEdge.target ||
+          JSON.stringify(prevEdge.data) !== JSON.stringify(newEdge.data);
+      });
 
-  // Memoize the node creation function
-  const createNodes = useCallback(() => {
-    return [
-      ...storeProcesses.map((p, index) => ({
-        id: p.id,
-        data: { label: `P${index}` },
-        position: { x: Math.random() * 200, y: Math.random() * 100 },
-        style: {
-          width: nodeWidth,
-          height: nodeHeight,
-          borderRadius: "50%",
-          border: cycleNodes.includes(p.id)
-            ? "3px solid #ef4444"
-            : "3px solid #60a5fa",
-          background: cycleNodes.includes(p.id)
-            ? "#991b1b"
-            : "#1e3a8a",
-          boxShadow:
-            "0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "16px",
-          fontWeight: "bold",
-          color: "#dbeafe",
-        },
-        type: "default",
-      })),
-      ...storeResources.map((r, index) => ({
-        id: r.id,
-        data: {
-          label: (
-            <div className="text-center">
-              <div className="font-bold text-emerald-300">R{index}</div>
-              <div className="text-sm text-emerald-200">{r.total}</div>
-            </div>
-          ),
-        },
-        position: { x: Math.random() * 200, y: Math.random() * 100 + 200 },
-        style: {
-          width: nodeWidth,
-          height: nodeHeight,
-          borderRadius: "12px",
-          border: cycleNodes.includes(r.id)
-            ? "3px solid #ef4444"
-            : "3px solid #34d399",
-          background: cycleNodes.includes(r.id)
-            ? "#991b1b"
-            : "#065f46",
-          boxShadow:
-            "0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3)",
-          padding: "4px",
-        },
-        type: "default",
-      })),
-    ];
-  }, [storeProcesses, storeResources, cycleNodes]);
-
-  // Memoize the edge creation function
-  const createEdges = useCallback(() => {
-    const isEdgeInCycle = (source: string, target: string) => {
-      return cycleNodes.includes(source) || cycleNodes.includes(target);
+      return nodesChanged || edgesChanged;
     };
 
-    return [
-      ...storeAllocations.map((a) => ({
-        id: `alloc-${a.processId}-${a.resourceId}-${a.amount}`,
-        source: a.resourceId,
-        target: a.processId,
-        label: `${a.amount}`,
-        animated: false,
-        style: {
-          stroke: isEdgeInCycle(a.resourceId, a.processId) ? "#ef4444" : "#a1a1aa",
-          strokeWidth: isEdgeInCycle(a.resourceId, a.processId) ? 3 : 2
-        },
-        labelBgStyle: { fill: "#27272a" },
-        labelStyle: { fill: "#e4e4e7" },
-        labelBgPadding: [8, 4],
-        labelBgBorderRadius: 4,
-        type: "default",
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          color: isEdgeInCycle(a.resourceId, a.processId) ? "#ef4444" : "#a1a1aa"
-        },
-      })),
-      ...storeRequests.map((r) => ({
-        id: `req-${r.processId}-${r.resourceId}-${r.amount}`,
-        source: r.processId,
-        target: r.resourceId,
-        label: `${r.amount}`,
-        animated: true,
-        style: {
-          stroke: isEdgeInCycle(r.processId, r.resourceId) ? "#ef4444" : "#a1a1aa",
-          strokeWidth: isEdgeInCycle(r.processId, r.resourceId) ? 3 : 2
-        },
-        labelBgStyle: { fill: "#27272a" },
-        labelStyle: { fill: "#e4e4e7" },
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          color: isEdgeInCycle(r.processId, r.resourceId) ? "#ef4444" : "#a1a1aa"
-        },
-        type: "default",
-      })),
-    ];
-  }, [storeAllocations, storeRequests, cycleNodes]);
+    if ((ragNodes.length > 0 || ragEdges.length > 0) &&
+      hasGraphStructureChanged(prevNodes.current, prevEdges.current, ragNodes, ragEdges)) {
+      const timeoutId = setTimeout(() => {
+        getLayoutedElements({ "elk.algorithm": "layered" }, ragNodes, ragEdges);
+        fitView({ duration: 200 });
+      }, 100);
 
-  // Update nodes and edges
+      prevNodes.current = ragNodes;
+      prevEdges.current = ragEdges;
+      return () => clearTimeout(timeoutId);
+    }
+  }, [ragNodes, ragEdges, getLayoutedElements, fitView]);
+
+  // Update graph when simulator state changes
   useEffect(() => {
-    setNodesState(createNodes());
-  }, [createNodes, setNodesState]);
+    useRAGStore.getState().updateGraphFromSimulator();
+  }, []);
 
+  // Auto-adjust layout when simulation starts
   useEffect(() => {
-    setEdgesState(createEdges());
-  }, [createEdges, setEdgesState]);
+    if (currentSimulationResult && currentStep === 0) {
+      const timeoutId = setTimeout(() => {
+        getLayoutedElements({ "elk.algorithm": "layered" }, ragNodes, ragEdges);
+        fitView({ duration: 200 });
+      }, 150);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [currentSimulationResult, currentStep, getLayoutedElements, ragNodes, ragEdges, fitView]);
 
+  // Persist node positions on drag
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      onNodesChangeInternal(changes);
+      changes.forEach((change) => {
+        if (change.type === 'position' && change.position) {
+          updateNodePosition(change.id, change.position);
+        }
+      });
     },
-    [onNodesChangeInternal]
+    [updateNodePosition]
   );
 
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => {
-      onEdgesChangeInternal(changes);
-    },
-    [onEdgesChangeInternal]
-  );
+  const onEdgesChange = useCallback((changes: EdgeChange[]) => {
+    // Handle edge changes if needed
+    console.log("Edge changes:", changes);
+  }, []);
 
   return (
     <div>
@@ -240,53 +204,43 @@ const ResourceAllocationGraphInternal = () => {
             size="sm"
             className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-600"
           >
-            {isFullscreen ? (
-              <Minimize2Icon className="h-4 w-4" />
-            ) : (
-              <Maximize2Icon className="h-4 w-4" />
-            )}
+            {isFullscreen ? <Minimize2Icon className="h-4 w-4" /> : <Maximize2Icon className="h-4 w-4" />}
           </Button>
           <Button
-            onClick={() => getLayoutedElements({ "elk.algorithm": "layered" })}
+            onClick={() => getLayoutedElements({ "elk.algorithm": "layered" }, ragNodes, ragEdges)}
             variant="outline"
             size="sm"
             className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-600"
+            disabled={ragNodes.length === 0}
           >
             Adjust Layout
           </Button>
         </div>
         <ReactFlow
-          nodes={nodes}
-          edges={edges}
+          nodes={styledNodes}
+          edges={ragEdges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           colorMode="dark"
           fitView
           minZoom={0.5}
           maxZoom={2}
+          nodesDraggable={true}
+          nodesConnectable={false}
+          elementsSelectable={true}
         >
-          <Background
-            color="#3f3f46"
-            variant={BackgroundVariant.Dots}
-            gap={20}
-            size={1}
-          />
-          <Controls
-            showInteractive={true}
-            className="bg-zinc-800 text-zinc-200 shadow-lg rounded-lg"
-          />
+          <Background color="#3f3f46" variant={BackgroundVariant.Dots} gap={20} size={1} />
+          <Controls showInteractive={true} className="bg-zinc-800 text-zinc-200 shadow-lg rounded-lg" />
         </ReactFlow>
       </div>
     </div>
   );
 };
 
-const ResourceAllocationGraph = () => {
-  return (
-    <ReactFlowProvider>
-      <ResourceAllocationGraphInternal />
-    </ReactFlowProvider>
-  );
-};
+const ResourceAllocationGraph = () => (
+  <ReactFlowProvider>
+    <ResourceAllocationGraphInternal />
+  </ReactFlowProvider>
+);
 
 export default ResourceAllocationGraph;

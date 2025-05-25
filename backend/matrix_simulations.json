@@ -1774,5 +1774,3212 @@
                 ]
             }
         ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        1,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        2
+                    ],
+                    [
+                        0,
+                        0,
+                        3,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        3,
+                        0,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        0,
+                        1,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1,
+                        1,
+                        0,
+                        1
+                    ],
+                    [
+                        2,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        1,
+                        0,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        0,
+                        1,
+                        0,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        2,
+                        1,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    5,
+                    2,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P5 can finish. Resources released.",
+                "work": [
+                    3,
+                    3,
+                    6,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P6 can finish. Resources released.",
+                "work": [
+                    4,
+                    4,
+                    7,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P7 can finish. Resources released.",
+                "work": [
+                    4,
+                    7,
+                    7,
+                    3,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Process P8 can finish. Resources released.",
+                "work": [
+                    6,
+                    7,
+                    8,
+                    5,
+                    4
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 7,
+                "action": "Process P9 can finish. Resources released.",
+                "work": [
+                    7,
+                    8,
+                    9,
+                    6,
+                    5
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 8,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    8,
+                    8,
+                    11,
+                    7,
+                    5
+                ],
+                "finish": [
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 9,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    10,
+                    9,
+                    11,
+                    7,
+                    6
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 10,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    11,
+                    10,
+                    11,
+                    8,
+                    8
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 11,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        1,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        2
+                    ],
+                    [
+                        0,
+                        0,
+                        3,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        3,
+                        0,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        0,
+                        1,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1,
+                        1,
+                        0,
+                        1
+                    ],
+                    [
+                        2,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        1,
+                        0,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        0,
+                        1,
+                        0,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        2,
+                        1,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    5,
+                    2,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P5 can finish. Resources released.",
+                "work": [
+                    3,
+                    3,
+                    6,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P6 can finish. Resources released.",
+                "work": [
+                    4,
+                    4,
+                    7,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P7 can finish. Resources released.",
+                "work": [
+                    4,
+                    7,
+                    7,
+                    3,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Process P8 can finish. Resources released.",
+                "work": [
+                    6,
+                    7,
+                    8,
+                    5,
+                    4
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 7,
+                "action": "Process P9 can finish. Resources released.",
+                "work": [
+                    7,
+                    8,
+                    9,
+                    6,
+                    5
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 8,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    8,
+                    8,
+                    11,
+                    7,
+                    5
+                ],
+                "finish": [
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 9,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    10,
+                    9,
+                    11,
+                    7,
+                    6
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 10,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    11,
+                    10,
+                    11,
+                    8,
+                    8
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 11,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        1,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        2
+                    ],
+                    [
+                        0,
+                        0,
+                        3,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        3,
+                        0,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        0,
+                        1,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1,
+                        1,
+                        0,
+                        1
+                    ],
+                    [
+                        2,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        1,
+                        0,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        0,
+                        1,
+                        0,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        2,
+                        1,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    5,
+                    2,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P5 can finish. Resources released.",
+                "work": [
+                    3,
+                    3,
+                    6,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P6 can finish. Resources released.",
+                "work": [
+                    4,
+                    4,
+                    7,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P7 can finish. Resources released.",
+                "work": [
+                    4,
+                    7,
+                    7,
+                    3,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Process P8 can finish. Resources released.",
+                "work": [
+                    6,
+                    7,
+                    8,
+                    5,
+                    4
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 7,
+                "action": "Process P9 can finish. Resources released.",
+                "work": [
+                    7,
+                    8,
+                    9,
+                    6,
+                    5
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 8,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    8,
+                    8,
+                    11,
+                    7,
+                    5
+                ],
+                "finish": [
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 9,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    10,
+                    9,
+                    11,
+                    7,
+                    6
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 10,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    11,
+                    10,
+                    11,
+                    8,
+                    8
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 11,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        1,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        2
+                    ],
+                    [
+                        0,
+                        0,
+                        3,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        3,
+                        0,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        0,
+                        1,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1,
+                        1,
+                        0,
+                        1
+                    ],
+                    [
+                        2,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        1,
+                        0,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        0,
+                        1,
+                        0,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        2,
+                        1,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    5,
+                    2,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P5 can finish. Resources released.",
+                "work": [
+                    3,
+                    3,
+                    6,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P6 can finish. Resources released.",
+                "work": [
+                    4,
+                    4,
+                    7,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P7 can finish. Resources released.",
+                "work": [
+                    4,
+                    7,
+                    7,
+                    3,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Process P8 can finish. Resources released.",
+                "work": [
+                    6,
+                    7,
+                    8,
+                    5,
+                    4
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 7,
+                "action": "Process P9 can finish. Resources released.",
+                "work": [
+                    7,
+                    8,
+                    9,
+                    6,
+                    5
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 8,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    8,
+                    8,
+                    11,
+                    7,
+                    5
+                ],
+                "finish": [
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 9,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    10,
+                    9,
+                    11,
+                    7,
+                    6
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 10,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    11,
+                    10,
+                    11,
+                    8,
+                    8
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 11,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        1,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        2
+                    ],
+                    [
+                        0,
+                        0,
+                        3,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        3,
+                        0,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        0,
+                        1,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1,
+                        1,
+                        0,
+                        1
+                    ],
+                    [
+                        2,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        1,
+                        0,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        0,
+                        1,
+                        0,
+                        2,
+                        1
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        2,
+                        1,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    5,
+                    2,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P5 can finish. Resources released.",
+                "work": [
+                    3,
+                    3,
+                    6,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P6 can finish. Resources released.",
+                "work": [
+                    4,
+                    4,
+                    7,
+                    2,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P7 can finish. Resources released.",
+                "work": [
+                    4,
+                    7,
+                    7,
+                    3,
+                    3
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Process P8 can finish. Resources released.",
+                "work": [
+                    6,
+                    7,
+                    8,
+                    5,
+                    4
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 7,
+                "action": "Process P9 can finish. Resources released.",
+                "work": [
+                    7,
+                    8,
+                    9,
+                    6,
+                    5
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 8,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    8,
+                    8,
+                    11,
+                    7,
+                    5
+                ],
+                "finish": [
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 9,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    10,
+                    9,
+                    11,
+                    7,
+                    6
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 10,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    11,
+                    10,
+                    11,
+                    8,
+                    8
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 11,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2
+                ],
+                "finish": [
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2
+                ],
+                "finish": [
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2
+                ],
+                "finish": [
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "test",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        2,
+                        1,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        2
+                    ],
+                    [
+                        0,
+                        0,
+                        3,
+                        1,
+                        0
+                    ]
+                ],
+                "request": [
+                    [
+                        0,
+                        1,
+                        0,
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1,
+                        1,
+                        0,
+                        1
+                    ],
+                    [
+                        2,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        1,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [
+                    1,
+                    3,
+                    5,
+                    2,
+                    1
+                ],
+                "finish": [
+                    false,
+                    false,
+                    true,
+                    false,
+                    true
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    3,
+                    4,
+                    5,
+                    2,
+                    2
+                ],
+                "finish": [
+                    false,
+                    true,
+                    true,
+                    false,
+                    true
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    4,
+                    5,
+                    5,
+                    3,
+                    4
+                ],
+                "finish": [
+                    false,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    5,
+                    5,
+                    7,
+                    4,
+                    4
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2
+                ],
+                "finish": [
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2
+                ],
+                "finish": [
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2
+                ],
+                "finish": [
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    0
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1,
+                    1,
+                    0
+                ],
+                "finish": [
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1,
+                    0
+                ],
+                "finish": [
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1,
+                    0
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1,
+                    1,
+                    0
+                ],
+                "finish": [
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1,
+                    0
+                ],
+                "finish": [
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    0,
+                    0
+                ],
+                "allocation": [
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        0
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Deadlock Check Completed",
+                "result": "Deadlock Detected",
+                "final_finish": [
+                    false,
+                    false
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    0,
+                    0
+                ],
+                "allocation": [
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        0
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Deadlock Check Completed",
+                "result": "Deadlock Detected",
+                "final_finish": [
+                    false,
+                    false
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [
+                    1,
+                    1,
+                    1
+                ],
+                "allocation": [
+                    [
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "request": [
+                    [
+                        1,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        1,
+                        0,
+                        1
+                    ]
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [
+                    1,
+                    1,
+                    1
+                ],
+                "finish": [
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1
+                ],
+                "finish": [
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [
+                    2,
+                    2,
+                    1
+                ],
+                "finish": [
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
     }
 ]

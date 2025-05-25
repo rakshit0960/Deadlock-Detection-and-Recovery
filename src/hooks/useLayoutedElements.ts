@@ -2,8 +2,8 @@
 "use client";
 
 // Import layout configuration and node dimensions
-import { elkLayoutOptionsBase, nodeHeight } from '@/config/ragLayout';
-import { nodeWidth } from '@/config/ragLayout';
+import { elkLayoutOptionsBase, nodeHeight, nodeWidth } from '@/config/ragLayout';
+import { useRAGStore } from '@/store/useRAGStore';
 import {
   useReactFlow,
   type Edge,
@@ -19,7 +19,7 @@ export const elk = new ELK();
 // Hook for handling automatic layout of graph elements
 export default function useLayoutedElements() {
   // Get React Flow utilities
-  const { getNodes, setNodes, getEdges, fitView } = useReactFlow();
+  const { fitView } = useReactFlow();
   // Flag to prevent concurrent layout operations
   const isLayouting = useRef(false);
 
@@ -30,9 +30,9 @@ export default function useLayoutedElements() {
       if (isLayouting.current) return;
       isLayouting.current = true;
 
-      // Use provided nodes/edges or get current ones from React Flow
-      const nodesForElk = nodesToLayoutParam || getNodes();
-      const edgesForElk = edgesToLayoutParam || getEdges();
+      // Use provided nodes/edges or get current ones from RAG store
+      const nodesForElk = nodesToLayoutParam || useRAGStore.getState().nodes;
+      const edgesForElk = edgesToLayoutParam || useRAGStore.getState().edges;
 
       // Exit if there are no nodes to layout
       if (nodesForElk.length === 0) {
@@ -63,7 +63,7 @@ export default function useLayoutedElements() {
         const layoutedGraph = await elk.layout(graph);
         if (layoutedGraph.children) {
           // Apply calculated positions to React Flow nodes
-          const updatedNodes = getNodes().map(currentRfNode => {
+          const updatedNodes = nodesForElk.map(currentRfNode => {
             const elkNode = layoutedGraph.children?.find(n => n.id === currentRfNode.id);
             if (elkNode) {
               return {
@@ -73,8 +73,8 @@ export default function useLayoutedElements() {
             }
             return currentRfNode;
           });
-          // Update node positions and fit view
-          setNodes(updatedNodes);
+          // Update node positions in RAG store and fit view
+          useRAGStore.getState().setGraph(updatedNodes, edgesForElk);
           fitView({ duration: 0, padding: 0.2 });
         }
       } catch (e) {
@@ -84,7 +84,7 @@ export default function useLayoutedElements() {
         isLayouting.current = false;
       }
     },
-    [getNodes, setNodes, getEdges, fitView]
+    [fitView]
   );
 
   return { getLayoutedElements };

@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useRAGStore } from "../store/useRAGStore";
 
 interface RequestResourceFormProps {
   processes: Process[];
@@ -22,12 +23,14 @@ const RequestResourceForm: React.FC<RequestResourceFormProps> = ({ processes, re
   const [processId, setProcessId] = useState('');
   const [resourceId, setResourceId] = useState('');
   const [amount, setAmount] = useState('');
+  const updateGraphFromSimulator = useRAGStore((s) => s.updateGraphFromSimulator);
 
   const handleRequest = () => {
     const amt = parseInt(amount, 10);
     if (processId && resourceId && !isNaN(amt) && amt > 0) {
       onRequest(processId, resourceId, amt);
       setAmount('');
+      updateGraphFromSimulator();
     }
   };
 
@@ -39,11 +42,14 @@ const RequestResourceForm: React.FC<RequestResourceFormProps> = ({ processes, re
             <SelectValue placeholder="Select Process" />
           </SelectTrigger>
           <SelectContent>
-            {processes.map(p => (
-              <SelectItem key={p.id} value={p.id}>
-                {p.id}
-              </SelectItem>
-            ))}
+            {processes.map((p) => {
+              const processNum = parseInt(p.id.substring(1));
+              return (
+                <SelectItem key={p.id} value={p.id}>
+                  P{processNum}
+                </SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
 
@@ -52,11 +58,14 @@ const RequestResourceForm: React.FC<RequestResourceFormProps> = ({ processes, re
             <SelectValue placeholder="Select Resource" />
           </SelectTrigger>
           <SelectContent>
-            {resources.map(r => (
-              <SelectItem key={r.id} value={r.id}>
-                {r.id}
-              </SelectItem>
-            ))}
+            {resources.map((r) => {
+              const resourceNum = parseInt(r.id.substring(1));
+              return (
+                <SelectItem key={r.id} value={r.id}>
+                  R{resourceNum}
+                </SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
 

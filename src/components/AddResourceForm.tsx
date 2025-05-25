@@ -9,12 +9,14 @@ import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Trash2Icon, Edit3Icon, CheckIcon, XIcon } from "lucide-react";
 import { useSimulatorStore } from "../store/useSimulatorStore";
+import { useRAGStore } from "../store/useRAGStore";
 
 const AddResourceForm: React.FC = () => {
   const resources = useSimulatorStore((s) => s.resources);
   const addResource = useSimulatorStore((s) => s.addResource);
   const removeResource = useSimulatorStore((s) => s.removeResource);
   const updateResource = useSimulatorStore((s) => s.updateResource);
+  const updateGraphFromSimulator = useRAGStore((s) => s.updateGraphFromSimulator);
 
   const [newResourceCount, setNewResourceCount] = useState<number | string>("");
   const [editingResourceId, setEditingResourceId] = useState<string | null>(null);
@@ -22,9 +24,12 @@ const AddResourceForm: React.FC = () => {
 
   const handleAddNewResource = () => {
     if (typeof newResourceCount === 'number' && newResourceCount > 0) {
-      const nextResourceNum = resources.length;
+      const nextResourceNum = resources.length > 0
+        ? Math.max(...resources.map(r => parseInt(r.id.substring(1)))) + 1
+        : 0;
       addResource(`R${nextResourceNum}`, newResourceCount);
       setNewResourceCount('');
+      updateGraphFromSimulator();
     } else {
       alert("Please provide a count greater than 0.");
     }
@@ -32,8 +37,8 @@ const AddResourceForm: React.FC = () => {
 
   const handleRemoveResource = () => {
     if (resources.length > 0) {
-      // Only remove the last resource
       removeResource(resources[resources.length - 1].id);
+      updateGraphFromSimulator();
     }
   };
 
@@ -52,6 +57,7 @@ const AddResourceForm: React.FC = () => {
           return;
         }
         updateResource(resourceId, editingResourceTotal);
+        updateGraphFromSimulator();
       }
     }
     setEditingResourceId(null);
@@ -93,53 +99,56 @@ const AddResourceForm: React.FC = () => {
               No resources added yet
             </p>
           )}
-          {resources.map((r, index) => (
-            <Card
-              key={r.id}
-              className="flex items-center justify-between p-3 mb-2 last:mb-0 gap-2"
-            >
-              {editingResourceId === r.id ? (
-                <>
-                  <Badge variant="secondary" className="text-sm whitespace-nowrap">
-                    Resource {index}
-                  </Badge>
-                  <Input
-                    type="number"
-                    min={1}
-                    value={editingResourceTotal}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingResourceTotal(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
-                    className="h-8 w-20 text-sm"
-                    autoFocus
-                  />
-                  <Button variant="ghost" size="icon" onClick={() => handleSaveEdit(r.id)} aria-label="Save">
-                    <CheckIcon className="h-4 w-4 text-green-500" />
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={handleCancelEdit} aria-label="Cancel">
-                    <XIcon className="h-4 w-4 text-red-500" />
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Badge variant="outline" className="text-sm">
-                    Resource {index}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    Total: {r.total} (Available: {r.available})
-                  </span>
-                  <div className="flex items-center ml-auto">
-                    <Button variant="ghost" size="icon" onClick={() => handleEdit(r)} aria-label={`Edit resource ${index}`}>
-                      <Edit3Icon className="h-4 w-4" />
+          {resources.map((r) => {
+            const resourceNum = parseInt(r.id.substring(1));
+            return (
+              <Card
+                key={r.id}
+                className="flex items-center justify-between p-3 mb-2 last:mb-0 gap-2"
+              >
+                {editingResourceId === r.id ? (
+                  <>
+                    <Badge variant="secondary" className="text-sm whitespace-nowrap">
+                      Resource {resourceNum}
+                    </Badge>
+                    <Input
+                      type="number"
+                      min={1}
+                      value={editingResourceTotal}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingResourceTotal(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
+                      className="h-8 w-20 text-sm"
+                      autoFocus
+                    />
+                    <Button variant="ghost" size="icon" onClick={() => handleSaveEdit(r.id)} aria-label={`Save Resource ${resourceNum}`}>
+                      <CheckIcon className="h-4 w-4 text-green-500" />
                     </Button>
-                    {index === resources.length - 1 && (
-                      <Button variant="ghost" size="icon" onClick={handleRemoveResource} aria-label={`Remove resource ${index}`}>
-                        <Trash2Icon className="h-4 w-4 text-destructive" />
+                    <Button variant="ghost" size="icon" onClick={handleCancelEdit} aria-label={`Cancel editing Resource ${resourceNum}`}>
+                      <XIcon className="h-4 w-4 text-red-500" />
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Badge variant="outline" className="text-sm">
+                      Resource {resourceNum}
+                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      Total: {r.total} (Available: {r.available})
+                    </span>
+                    <div className="flex items-center ml-auto">
+                      <Button variant="ghost" size="icon" onClick={() => handleEdit(r)} aria-label={`Edit Resource ${resourceNum}`}>
+                        <Edit3Icon className="h-4 w-4" />
                       </Button>
-                    )}
-                  </div>
-                </>
-              )}
-            </Card>
-          ))}
+                      {r.id === resources[resources.length - 1].id && (
+                        <Button variant="ghost" size="icon" onClick={handleRemoveResource} aria-label={`Remove Resource ${resourceNum}`}>
+                          <Trash2Icon className="h-4 w-4 text-destructive" />
+                        </Button>
+                      )}
+                    </div>
+                  </>
+                )}
+              </Card>
+            );
+          })}
         </div>
       </ScrollArea>
     </div>

@@ -2,15 +2,20 @@
 
 import { useDeadlockStore } from "@/store/useDeadlockStore";
 import { ScrollArea } from "./ui/scroll-area";
+import type { WfgSimulationStep, MatrixSimulationStep } from "@/store/useDeadlockStore";
 
 const SimulationLogs = () => {
-  const simulationResult = useDeadlockStore((s) => s.simulationResult);
+  const simulationType = useDeadlockStore((s) => s.simulationType);
+  const wfgSimulationResult = useDeadlockStore((s) => s.wfgSimulationResult);
+  const matrixSimulationResult = useDeadlockStore((s) => s.matrixSimulationResult);
   const currentStep = useDeadlockStore((s) => s.currentStep);
+
+  const simulationResult = simulationType === 'wfg' ? wfgSimulationResult : matrixSimulationResult;
 
   // Get all steps up to the current step
   const currentLogs = simulationResult?.simulation?.steps
     ?.slice(0, currentStep + 1)
-    .map((step) => ({
+    .map((step: WfgSimulationStep | MatrixSimulationStep) => ({
       step: step.step,
       action: step.action,
     })) || [];
@@ -19,7 +24,7 @@ const SimulationLogs = () => {
   const isLastStep = currentStep === (simulationResult?.simulation?.steps?.length || 0) - 1;
   if (isLastStep && simulationResult) {
     const deadlockStatus = simulationResult.deadlocked
-      ? `Deadlock detected! Cycle: ${simulationResult.cycle_nodes.join(" → ")}`
+      ? `Deadlock detected!${simulationType === 'wfg' && wfgSimulationResult ? ` Cycle: ${wfgSimulationResult.cycle_nodes.join(" → ")}` : ''}`
       : "No deadlock detected";
     currentLogs.push({
       step: currentLogs.length + 1,
@@ -33,12 +38,12 @@ const SimulationLogs = () => {
       <ScrollArea className="h-[200px] w-full rounded-md border border-border p-4">
         {currentLogs.length > 0 ? (
           <ul className="text-sm text-muted-foreground space-y-2">
-            {currentLogs.map((log, index) => (
+            {currentLogs.map((log: { step: number; action: string }, index: number) => (
               <li
                 key={index}
                 className={`py-1 px-2 rounded ${index === currentLogs.length - 1
-                    ? "bg-muted/50 font-medium"
-                    : ""
+                  ? "bg-muted/50 font-medium"
+                  : ""
                   }`}
               >
                 Step {log.step} &nbsp; {log.action}

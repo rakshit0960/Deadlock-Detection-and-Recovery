@@ -20,20 +20,20 @@ type SimulatorState = {
 
 export const useSimulatorStore = create<SimulatorState>((set) => ({
   processes: [
+    { id: 'P0' },
     { id: 'P1' },
-    { id: 'P2' },
   ],
   resources: [
+    { id: 'R0', total: 1, available: 1 },
     { id: 'R1', total: 1, available: 1 },
-    { id: 'R2', total: 1, available: 1 },
   ],
   allocations: [
-    { processId: 'P2', resourceId: 'R1', amount: 1 },
-    { processId: 'P2', resourceId: 'R2', amount: 1 },
+    { processId: 'P1', resourceId: 'R0', amount: 1 },
+    { processId: 'P1', resourceId: 'R1', amount: 1 },
   ],
   requests: [
-    { processId: 'P1', resourceId: 'R1', amount: 1 },
-    { processId: 'P1', resourceId: 'R2', amount: 1 },
+    { processId: 'P0', resourceId: 'R0', amount: 1 },
+    { processId: 'P0', resourceId: 'R1', amount: 1 },
   ],
 
   addProcess: (id) =>

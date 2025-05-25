@@ -1,37 +1,42 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useDeadlockStore } from '@/store/useDeadlockStore';
 import { useSimulatorStore } from '@/store/useSimulatorStore';
 import {
+  ArrowPathIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  PlayIcon,
   PauseIcon,
-  ArrowPathIcon,
+  PlayIcon,
 } from '@heroicons/react/24/solid';
 
 const DetectionControls = () => {
   const isLoading = useDeadlockStore((s) => s.isLoading);
   const error = useDeadlockStore((s) => s.error);
-  const simulationResult = useDeadlockStore((s) => s.simulationResult);
+  const simulationType = useDeadlockStore((s) => s.simulationType);
+  const wfgSimulationResult = useDeadlockStore((s) => s.wfgSimulationResult);
+  const matrixSimulationResult = useDeadlockStore((s) => s.matrixSimulationResult);
   const currentStep = useDeadlockStore((s) => s.currentStep);
   const isAnimating = useDeadlockStore((s) => s.isAnimating);
   const animationSpeed = useDeadlockStore((s) => s.animationSpeed);
   const totalSteps = useDeadlockStore((s) => s.totalSteps);
 
   const detectDeadlockWithWFG = useDeadlockStore((s) => s.detectDeadlockWithWFG);
+  const detectDeadlockWithMatrix = useDeadlockStore((s) => s.detectDeadlockWithMatrix);
   const goToStep = useDeadlockStore((s) => s.goToStep);
   const nextStep = useDeadlockStore((s) => s.nextStep);
   const prevStep = useDeadlockStore((s) => s.prevStep);
   const startAnimation = useDeadlockStore((s) => s.startAnimation);
   const stopAnimation = useDeadlockStore((s) => s.stopAnimation);
   const setSpeed = useDeadlockStore((s) => s.setSpeed);
-  const getCurrentStepData = useDeadlockStore((s) => s.getCurrentStepData);
 
   const reset = useSimulatorStore((s) => s.reset);
 
-  const currentStepData = getCurrentStepData();
+  // Get the current simulation result based on type
+  const simulationResult = simulationType === 'wfg' ? wfgSimulationResult : matrixSimulationResult;
+
+  // Get current step data
+  const currentStepData = simulationResult?.simulation?.steps[currentStep];
 
   const handleReset = () => {
     stopAnimation();
@@ -45,13 +50,23 @@ const DetectionControls = () => {
 
       {/* Detection controls */}
       <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
-        <Button
-          onClick={detectDeadlockWithWFG}
-          disabled={isLoading}
-          className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
-        >
-          {isLoading ? 'Detecting...' : 'Run WFG Detection'}
-        </Button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button
+            onClick={detectDeadlockWithWFG}
+            disabled={isLoading}
+            className={`${simulationType === 'wfg' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-zinc-700 hover:bg-zinc-600'} text-white flex-1 sm:flex-none`}
+          >
+            {isLoading && simulationType === 'wfg' ? 'Detecting...' : 'WFG Detection'}
+          </Button>
+
+          <Button
+            onClick={detectDeadlockWithMatrix}
+            disabled={isLoading}
+            className={`${simulationType === 'matrix' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-zinc-700 hover:bg-zinc-600'} text-white flex-1 sm:flex-none`}
+          >
+            {isLoading && simulationType === 'matrix' ? 'Detecting...' : 'Matrix Detection'}
+          </Button>
+        </div>
 
         <Button
           onClick={handleReset}
@@ -68,9 +83,7 @@ const DetectionControls = () => {
         {simulationResult && (
           <div className="bg-zinc-800 px-3 py-2 rounded-md text-sm">
             <span className={simulationResult.deadlocked ? 'text-red-400' : 'text-green-400'}>
-              {simulationResult.deadlocked
-                ? `Deadlock Detected! Cycle: ${simulationResult.cycle_nodes.join(', ')}`
-                : 'No Deadlock Detected'}
+              {simulationResult.deadlocked ? 'Deadlock Detected!' : 'No Deadlock Detected'}
             </span>
           </div>
         )}
