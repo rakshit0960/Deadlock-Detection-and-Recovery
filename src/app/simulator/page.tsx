@@ -3,9 +3,9 @@
 import AddProcessForm from '../../components/AddProcessForm';
 import AddResourceForm from '../../components/AddResourceForm';
 import AllocateResourceForm from '../../components/AllocateResourceForm';
-import DetectionControls from '../../components/DetectionControls';
 import RequestResourceForm from '../../components/RequestResourceForm';
 import ResourceAllocationGraph from '../../components/ResourceAllocationGraph';
+import SimulationLogs from '@/components/SimulationLogs';
 import { useSimulatorStore } from '../../store/useSimulatorStore';
 
 const SimulatorPage = () => {
@@ -30,15 +30,19 @@ const SimulatorPage = () => {
           </div>
           <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
             <h2 className="font-semibold mb-4 text-card-foreground">Allocate Resource</h2>
-            <AllocateResourceForm processes={processes} resources={resources} onAllocate={(processId, resourceId, amount) => allocate({ processId, resourceId, amount })} />
+            <AllocateResourceForm
+              processes={processes}
+              resources={resources}
+              onAllocate={(processId, resourceId, amount) => allocate({ processId, resourceId, amount })}
+            />
           </div>
           <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
             <h2 className="font-semibold mb-4 text-card-foreground">Request Resource</h2>
-            <RequestResourceForm processes={processes} resources={resources} onRequest={(processId, resourceId, amount) => request({ processId, resourceId, amount })} />
-          </div>
-          <div className="bg-card rounded-lg shadow-lg p-6 border border-border flex flex-col gap-4">
-            <h2 className="font-semibold mb-2 text-card-foreground">Detection Method</h2>
-            <DetectionControls />
+            <RequestResourceForm
+              processes={processes}
+              resources={resources}
+              onRequest={(processId, resourceId, amount) => request({ processId, resourceId, amount })}
+            />
           </div>
         </div>
         {/* Right Column: Graph and Logs */}
@@ -47,16 +51,8 @@ const SimulatorPage = () => {
             <h2 className="font-semibold mb-4 text-card-foreground">Resource Allocation Graph</h2>
             <ResourceAllocationGraph />
           </div>
-          <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
-            <h2 className="font-semibold mb-4 text-card-foreground">Logs</h2>
-            {/* Placeholder for logs */}
-            <ul className="text-sm text-muted-foreground space-y-1">
-              <li>Step 3 &nbsp; Deadlock detected between P1 &lt;=&gt; P2</li>
-              <li>Step 4 &nbsp; Q-Agent chose: terminate P2</li>
-              <li>Step 5 &nbsp; Deadlock resolved.</li>
-            </ul>
-          </div>
-        </div>
+          <SimulationLogs />
+        </div>x
       </div>
     </div>
   );
