@@ -4,7 +4,4 @@ pydantic
 gym
 stable-baselines3
 numpy
-httpx
-pytest
-pytest-asyncio
-# slimmy
+# slimmy conda activate C:\Users\Rakshit\Dev\clg\code\venv
