@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+gym
+stable-baselines3
+numpy
+httpx
+pytest
+pytest-asyncio
+# slimmy

@@ -1,10 +1,22 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 from matrix import is_deadlocked
 from rag_wfg import run_deadlock_detection
+import numpy as np
+from stable_baselines3 import PPO
+import gym
+from env import DeadlockRecoveryEnv
+import traceback
 
 app = FastAPI()
+
+# Print registered routes for debugging
+@app.on_event("startup")
+async def startup_event():
+    print("Registered routes:")
+    for route in app.routes:
+        print(f"{route.methods} {route.path}")
 
 class MatrixInput(BaseModel):
     available: List[int]
@@ -18,12 +30,34 @@ class WFGInput(BaseModel):
     request: List[List[int]]
     simulation_id: str = "wfg_sim"
 
+class SimulationStep(BaseModel):
+    step: int
+    action: str
+    available: Optional[List[int]] = None
+    allocation: Optional[List[List[int]]] = None
+    request: Optional[List[List[int]]] = None
+    work: Optional[List[int]] = None
+    finish: List[bool]
+    result: Optional[str] = None
+    final_finish: Optional[List[bool]] = None
+
+class SimulationResult(BaseModel):
+    simulation_id: str
+    steps: List[SimulationStep]
+
+# Load the trained model for deadlock recovery
+try:
+    model = PPO.load("ppo_deadlock_multi_env")
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model = None
+
 @app.get("/")
-def read_root():
+async def read_root():
     return {"message": "Hello World"}
 
 @app.post("/api/matrix")
-def matrix_simulation(input_data: MatrixInput):
+async def matrix_simulation(input_data: MatrixInput):
     try:
         deadlocked = is_deadlocked(
             input_data.available,
@@ -42,7 +76,7 @@ def matrix_simulation(input_data: MatrixInput):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/wfg")
-def wfg_simulation(input_data: WFGInput):
+async def wfg_simulation(input_data: WFGInput):
     try:
         deadlocked, cycle_nodes, file_path = run_deadlock_detection(
             input_data.available,
@@ -59,4 +93,54 @@ def wfg_simulation(input_data: WFGInput):
             "simulation": simulations[-1] if simulations else None
         }
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/deadlock_recovery")
+async def deadlock_recovery(input_data: MatrixInput):
+    try:
+        if model is None:
+            raise HTTPException(status_code=500, detail="Model not loaded")
+
+        allocation = np.array(input_data.allocation)
+        request = np.array(input_data.request)
+        available = np.array(input_data.available)
+
+        num_processes = len(allocation)
+        env = DeadlockRecoveryEnv(num_processes=num_processes, num_resources=len(available))
+        obs = env.reset(allocation=allocation, request=request, available=available)
+
+        steps = []
+        step_count = 0
+        done = False
+
+        while not done:
+            step_info = SimulationStep(
+                step=step_count,
+                action=f"Step {step_count} executed",
+                allocation=env.allocation.tolist(),
+                request=env.request.tolist(),
+                available=env.available.tolist(),
+                finish=[bool(np.all(env.request[i] == 0)) for i in range(env.num_processes)]
+            )
+            steps.append(step_info)
+
+            action, _ = model.predict(obs)
+            obs, reward, done, _ = env.step(action)
+            step_count += 1
+
+        steps.append(SimulationStep(
+            step=step_count,
+            action="Deadlock Check Completed",
+            result="No Deadlock" if not env._is_deadlocked() else "Deadlock Detected",
+            final_finish=[bool(np.all(env.request[i] == 0)) for i in range(env.num_processes)],
+            finish=[bool(np.all(env.request[i] == 0)) for i in range(env.num_processes)]
+        ))
+
+        return SimulationResult(
+            simulation_id=input_data.simulation_id,
+            steps=steps
+        )
+    except Exception as e:
+        print(f"Error in deadlock_recovery: {e}")
+        print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))

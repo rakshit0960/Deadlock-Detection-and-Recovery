@@ -2,37 +2,27 @@ from matrix import is_deadlocked as banker_deadlock
 from rag_wfg import run_deadlock_detection as wfg_deadlock
 
 def load_static_inputs():
-    available = [0, 0, 0]
+    available = [1, 0, 0]
 
     allocation = [
-        [1, 0, 0],  # P0 holds R0
-        [0, 1, 0],  # P1 holds R1
-        [0, 0, 1]   # P2 holds R2
+        [0, 1, 0],  # P0 holds R1
+        [1, 0, 1],  # P1 holds R0 and R2
+        [1, 1, 0]   # P2 holds R0 and R1
     ]
 
     request = [
-        [0, 0, 0],  # P0 requests nothing
-        [0, 0, 1],  # P1 requests R2
-        [0, 0, 0]   # P2 requests nothing
+        [1, 0, 1],  # P0 requests R0 and R2
+        [0, 1, 0],  # P1 requests R1
+        [0, 0, 1]   # P2 requests R2
     ]
-    '''available = [1, 1, 0]
-    allocation = [
-        [1, 0, 0],
-        [0, 1, 0],
-        [0, 0, 1]
-    ]
-    request = [
-        [0, 1, 0],
-        [0, 0, 1],
-        [1, 0, 0]
-    ]'''
+
 
     return available, allocation, request
 
 def main():
     print("=== Deadlock Detection Tool ===")
     print("Choose method:")
-    print("1. Banker's Algorithm (Matrix-Based)")
+    print("1. Safety Algorithm (Matrix-Based)")
     print("2. Wait-For Graph (WFG)")
 
     while True:
@@ -45,9 +35,9 @@ def main():
 
     if method == "1":
         if banker_deadlock(available, allocation, request):
-            print("🔴 Deadlock detected using Banker's Algorithm.")
+            print("🔴 Deadlock detected using matrix.")
         else:
-            print("✅ No deadlock detected using Banker's Algorithm.")
+            print("✅ No deadlock detected using matrix.")
     else:
         print("\n[Using Wait-For Graph (RAG to WFG)]")
         deadlocked, cycle_nodes, file_path = wfg_deadlock(available, allocation, request, "wfg_sim")
