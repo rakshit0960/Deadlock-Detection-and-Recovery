@@ -5,7 +5,7 @@ from rag_wfg import run_deadlock_detection
 import numpy as np
 from stable_baselines3 import PPO
 import gym
-from env import DeadlockRecoveryEnv
+from env import DeadlockRecoveryEnv, DeadlockRecoveryEnvSingle
 import traceback
 from typing import List, Optional
 import json
@@ -72,6 +72,7 @@ class SimulationStep(BaseModel):
 class SimulationResult(BaseModel):
     simulation_id: str
     steps: List[SimulationStep]
+    response: List[str]
 
 # Load the trained model for deadlock recovery
 try:
@@ -123,6 +124,70 @@ async def wfg_simulation(input_data: WFGInput):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# Load the trained model for deadlock recovery
+try:
+    model_single = PPO.load("ppo_deadlock_recovery_single.zip")
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model_single = None
+
+@app.post("/api/deadlock_recovery_wsg")
+def deadlock_recovery_wsg(wsg_input: WFGInput):
+    allocation = np.array(wsg_input.allocation)
+    request = np.array(wsg_input.request)
+    available = np.array(wsg_input.available)
+
+    num_processes = len(allocation)
+    num_resources=len(available)
+    env = DeadlockRecoveryEnvSingle(num_processes=num_processes, num_resources=num_resources)
+    obs = env.reset(allocation=allocation, request=request, available=available)
+    steps = []
+    step_count = 0
+    done = False
+    responses = []
+    while not done:
+        # Capture the render output
+        import io
+        import sys
+        old_stdout = sys.stdout
+        sys.stdout = buffer = io.StringIO()
+        env.render()
+        sys.stdout = old_stdout
+        render_output = buffer.getvalue()
+        responses.append(render_output)
+
+        step_info = SimulationStep(
+            step=step_count,
+            action=f"Step {step_count} executed",
+            allocation=env.allocation.tolist(),
+            request=env.request.tolist(),
+            available=env.available.tolist(),
+            finish=[bool(np.all(env.request[i] == 0)) for i in range(env.num_processes)]
+        )
+        steps.append(step_info)
+
+        action, _ = model_single.predict(obs)
+        obs, reward, done, _ = env.step(action)
+        step_count += 1
+
+    steps.append(SimulationStep(
+        step=step_count,
+        action="Deadlock Check Completed",
+        result="No Deadlock" if not env._is_deadlocked() else "Deadlock Detected",
+        final_finish=[bool(np.all(env.request[i] == 0)) for i in range(env.num_processes)],
+        finish=[bool(np.all(env.request[i] == 0)) for i in range(env.num_processes)]
+    ))
+
+    return SimulationResult(
+        simulation_id="recorvery_sim_single",
+        steps=steps,
+        response=responses
+    )
+
+
+
+
+
 @app.post("/api/deadlock_recovery")
 def deadlock_recovery(matrix_input: MatrixInput):
     allocation = np.array(matrix_input.allocation)
@@ -130,14 +195,26 @@ def deadlock_recovery(matrix_input: MatrixInput):
     available = np.array(matrix_input.available)
 
     num_processes = len(allocation)
-    env = DeadlockRecoveryEnv(num_processes=num_processes, num_resources=len(available))
+    num_resources=len(available)
+    env = DeadlockRecoveryEnvSingle(num_processes=num_processes, num_resources=num_resources)
     obs = env.reset(allocation=allocation, request=request, available=available)
 
     steps = []
     step_count = 0
     done = False
+    responses = []
 
     while not done:
+        # Capture the render output
+        import io
+        import sys
+        old_stdout = sys.stdout
+        sys.stdout = buffer = io.StringIO()
+        env.render()
+        sys.stdout = old_stdout
+        render_output = buffer.getvalue()
+        responses.append(render_output)
+
         step_info = SimulationStep(
             step=step_count,
             action=f"Step {step_count} executed",
@@ -161,6 +238,7 @@ def deadlock_recovery(matrix_input: MatrixInput):
     ))
 
     return SimulationResult(
-        simulation_id="matrix_sim",
-        steps=steps
+        simulation_id="recorvery_sim",
+        steps=steps,
+        response=responses
     )

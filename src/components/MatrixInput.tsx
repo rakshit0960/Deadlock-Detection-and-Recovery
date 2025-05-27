@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
 
 interface MatrixInputProps {
   onSubmit: (data: {
@@ -24,6 +25,7 @@ const MatrixInput: React.FC<MatrixInputProps> = ({ onSubmit }) => {
     Array(5).fill(null).map(() => Array(5).fill('0'))
   );
   const [available, setAvailable] = useState<string[]>(Array(5).fill('0'));
+  const [jsonInput, setJsonInput] = useState('');
 
   const handleDimensionChange = (processes: number, resources: number) => {
     setNumProcesses(processes);
@@ -70,6 +72,25 @@ const MatrixInput: React.FC<MatrixInputProps> = ({ onSubmit }) => {
     setMatrix(newMatrix);
   };
 
+  const handleJsonInput = () => {
+    try {
+      const data = JSON.parse(jsonInput);
+      if (data.allocation && data.request && data.available) {
+        setNumProcesses(data.allocation.length);
+        setNumResources(data.allocation[0].length);
+        setAllocation(data.allocation.map((row: number[]) => row.map(String)));
+        setRequest(data.request.map((row: number[]) => row.map(String)));
+        setAvailable(data.available.map(String));
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Invalid JSON input', error.message);
+      } else {
+        console.error('Invalid JSON input');
+      }
+    }
+  };
+
   const handleSubmit = () => {
     const parsedAllocation = allocation.map(row => row.map(Number));
     const parsedRequest = request.map(row => row.map(Number));
@@ -84,6 +105,19 @@ const MatrixInput: React.FC<MatrixInputProps> = ({ onSubmit }) => {
 
   return (
     <div className="space-y-6">
+      <Card className="p-4">
+        <Label className="block mb-2">JSON Input</Label>
+        <Textarea
+          value={jsonInput}
+          onChange={(e) => setJsonInput(e.target.value)}
+          placeholder='{"allocation": [[...]], "request": [[...]], "available": [...]}'
+          className="min-h-[100px] font-mono text-sm"
+        />
+        <Button onClick={handleJsonInput} className="mt-2 w-full">
+          Parse JSON Input
+        </Button>
+      </Card>
+
       <div className="flex gap-4 items-end">
         <div className="flex-1">
           <Label>Number of Processes</Label>

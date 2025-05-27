@@ -1,16 +1,16 @@
 "use client";
 
-import AddProcessForm from '@/components/AddProcessForm';
-import AddResourceForm from '@/components/AddResourceForm';
-import AllocateResourceForm from '@/components/AllocateResourceForm';
-import MatrixInput from '@/components/MatrixInput';
-import RequestResourceForm from '@/components/RequestResourceForm';
-import ResourceAllocationGraph from '@/components/ResourceAllocationGraph';
-import SimulationLogs from '@/components/SimulationLogs';
+import AddProcessForm from "@/components/AddProcessForm";
+import AddResourceForm from "@/components/AddResourceForm";
+import AllocateResourceForm from "@/components/AllocateResourceForm";
+import MatrixInput from "@/components/MatrixInput";
+import RequestResourceForm from "@/components/RequestResourceForm";
+import ResourceAllocationGraph from "@/components/ResourceAllocationGraph";
+import SimulationLogs from "@/components/SimulationLogs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSimulatorStore } from '@/store/useSimulatorStore';
-import { useRAGStore } from '@/store/useRAGStore';
+import { useSimulatorStore } from "@/store/useSimulatorStore";
+import { useRAGStore } from "@/store/useRAGStore";
 import { Settings2 } from "lucide-react";
 
 const SimulatorPage = () => {
@@ -21,12 +21,14 @@ const SimulatorPage = () => {
   const clearAll = useSimulatorStore((s) => s.clearAll);
   const addProcess = useSimulatorStore((s) => s.addProcess);
   const addResource = useSimulatorStore((s) => s.addResource);
-  const updateGraphFromSimulator = useRAGStore((s) => s.updateGraphFromSimulator);
+  const updateGraphFromSimulator = useRAGStore(
+    (s) => s.updateGraphFromSimulator
+  );
 
   const handleMatrixSubmit = (data: {
-    allocation: number[][],
-    request: number[][],
-    available: number[]
+    allocation: number[][];
+    request: number[][];
+    available: number[];
   }) => {
     // Clear existing state
     clearAll();
@@ -41,7 +43,10 @@ const SimulatorPage = () => {
 
     // Add resources with their total units (allocated + available)
     for (let j = 0; j < numResources; j++) {
-      const totalAllocated = data.allocation.reduce((sum, row) => sum + row[j], 0);
+      const totalAllocated = data.allocation.reduce(
+        (sum, row) => sum + row[j],
+        0
+      );
       const totalUnits = totalAllocated + data.available[j];
       addResource(`R${j}`, totalUnits);
     }
@@ -53,7 +58,7 @@ const SimulatorPage = () => {
           allocate({
             processId: `P${processIndex}`,
             resourceId: `R${resourceIndex}`,
-            amount: units
+            amount: units,
           });
         }
       });
@@ -66,7 +71,7 @@ const SimulatorPage = () => {
           request({
             processId: `P${processIndex}`,
             resourceId: `R${resourceIndex}`,
-            amount: units
+            amount: units,
           });
         }
       });
@@ -118,7 +123,9 @@ const SimulatorPage = () => {
                     </div>
 
                     <div className="rounded-lg border p-4">
-                      <h3 className="text-sm font-medium mb-3">Allocate Resource</h3>
+                      <h3 className="text-sm font-medium mb-3">
+                        Allocate Resource
+                      </h3>
                       <AllocateResourceForm
                         processes={processes}
                         resources={resources}
@@ -130,7 +137,9 @@ const SimulatorPage = () => {
                     </div>
 
                     <div className="rounded-lg border p-4">
-                      <h3 className="text-sm font-medium mb-3">Request Resource</h3>
+                      <h3 className="text-sm font-medium mb-3">
+                        Request Resource
+                      </h3>
                       <RequestResourceForm
                         processes={processes}
                         resources={resources}
@@ -168,16 +177,7 @@ const SimulatorPage = () => {
             </Card>
 
             {/* Logs */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Simulation Logs</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[200px] overflow-y-auto rounded-lg border bg-muted/50 p-4">
-                  <SimulationLogs />
-                </div>
-              </CardContent>
-            </Card>
+            <SimulationLogs />
           </div>
         </div>
       </div>

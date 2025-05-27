@@ -1,75 +1,13 @@
-import { APIInputType, getAPIInput } from '@/lib/utils'; // Import APIInputType
-import type { Edge } from "@xyflow/react";
-import { MarkerType } from "@xyflow/react";
-import { create } from 'zustand';
-import { useRAGStore } from './useRAGStore';
-
-// Interface for Wait-For Graph simulation steps
-export interface WfgSimulationStep {
-  step: number;
-  action: string;
-  graph?: Record<string, string[]>; // Graph representation for each step
-}
-
-// Interface for Banker's Algorithm (Matrix) simulation steps
-export interface MatrixSimulationStep {
-  step: number;
-  action: string;
-  available?: number[];      // Available resources vector
-  allocation?: number[][];   // Current allocation matrix
-  request?: number[][];      // Request matrix
-  work?: number[];          // Work vector used in algorithm
-  finish: boolean[];        // Finish vector tracking completed processes
-  result?: string;          // Step result message
-  final_finish?: boolean[]; // Final state of finish vector
-}
-
-// Response interface for WFG deadlock detection
-export interface WfgSimulationResponse {
-  deadlocked: boolean;      // Whether deadlock was detected
-  cycle_nodes: string[];    // Nodes involved in deadlock cycle
-  simulation: {
-    simulation_id: string;
-    steps: WfgSimulationStep[]; // Simulation steps for WFG
-  } | null;
-}
-
-// Response interface for Matrix (Banker's) deadlock detection
-export interface MatrixSimulationResponse {
-  deadlocked: boolean;     // Whether deadlock was detected
-  simulation: {
-    simulation_id: string;
-    steps: MatrixSimulationStep[]; // Simulation steps for Matrix
-  } | null;
-}
-
-// Main store interface defining state and actions
-interface DeadlockStore {
-  // State properties
-  isLoading: boolean;                                        // Loading state flag
-  error: string | null;                                      // Error message if any
-  wfgSimulationResult: WfgSimulationResponse | null;         // WFG simulation results
-  matrixSimulationResult: MatrixSimulationResponse | null;   // Matrix simulation results
-  currentStep: number;                                       // Current step in simulation
-  isAnimating: boolean;                                      // Animation state
-  animationSpeed: number;                                    // Animation speed in ms
-  animationTimer: NodeJS.Timeout | null;                     // Timer for animation
-  simulationType: 'wfg' | 'matrix' | null;                   // Current simulation type
-
-  // Action methods
-  detectDeadlockWithWFG: () => Promise<void>;               // Run WFG detection
-  detectDeadlockWithMatrix: () => Promise<void>;            // Run Matrix detection
-  goToStep: (step: number) => void;                         // Jump to specific step
-  nextStep: () => void;                                     // Go to next step
-  prevStep: () => void;                                     // Go to previous step
-  startAnimation: () => void;                               // Start animation
-  stopAnimation: () => void;                                // Stop animation
-  setSpeed: (speed: number) => void;                        // Set animation speed
-  updateRAGForCurrentStep: () => void;                      // Update RAG visualization
-
-  // Computed values
-  totalSteps: number;                                       // Total steps in simulation
-}
+import { APIInputType, getAPIInput } from "@/lib/utils";
+import { create } from "zustand";
+import { useRAGStore } from "./useRAGStore";
+import { updateRAGForCurrentStep as updateRAGVisualization } from "@/lib/simulationVisualizer";
+import type {
+  DeadlockStore,
+  WfgSimulationResponse,
+  MatrixSimulationResponse,
+  RecoverySimulationResponse,
+} from "@/types/deadlock";
 
 // Create and export the deadlock store
 export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
@@ -78,17 +16,28 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
   error: null,
   wfgSimulationResult: null,
   matrixSimulationResult: null,
+  recoverySimulationResult: null,
   currentStep: 0,
   isAnimating: false,
   animationSpeed: 1000,
   animationTimer: null,
   simulationType: null,
+  detectionType: null,
   totalSteps: 0,
 
   // Implementation of actions
   detectDeadlockWithWFG: async () => {
     // Reset state and clear previous results
-    set({ isLoading: true, error: null, currentStep: 0, simulationType: 'wfg', wfgSimulationResult: null, matrixSimulationResult: null });
+    set({
+      isLoading: true,
+      error: null,
+      currentStep: 0,
+      simulationType: "wfg",
+      detectionType: "wfg",
+      wfgSimulationResult: null,
+      matrixSimulationResult: null,
+      recoverySimulationResult: null,
+    });
     get().stopAnimation();
     useRAGStore.getState().clearGraph();
 
@@ -97,10 +46,11 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
 
     try {
       // Make API request
-      const response = await fetch('/api/wfg', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ // Send only what WFG API expects
+      const response = await fetch("/api/wfg", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          // Send only what WFG API expects
           available: inputData.available,
           allocation: inputData.allocation,
           request: inputData.request,
@@ -111,7 +61,9 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
       // Handle API errors
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+        throw new Error(
+          errorData.detail || `HTTP error! status: ${response.status}`
+        );
       }
 
       // Process successful response
@@ -125,7 +77,8 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
       }
     } catch (e) {
       // Handle errors
-      const message = e instanceof Error ? e.message : 'Failed to detect deadlock (WFG).';
+      const message =
+        e instanceof Error ? e.message : "Failed to detect deadlock (WFG).";
       set({ error: message });
       console.error("WFG Deadlock detection error:", e);
     } finally {
@@ -134,7 +87,16 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
   },
 
   detectDeadlockWithMatrix: async () => {
-    set({ isLoading: true, error: null, currentStep: 0, simulationType: 'matrix', wfgSimulationResult: null, matrixSimulationResult: null });
+    set({
+      isLoading: true,
+      error: null,
+      currentStep: 0,
+      simulationType: "matrix",
+      detectionType: "matrix",
+      wfgSimulationResult: null,
+      matrixSimulationResult: null,
+      recoverySimulationResult: null,
+    });
     get().stopAnimation();
     useRAGStore.getState().clearGraph();
 
@@ -143,9 +105,9 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
 
     try {
       // Make API request
-      const response = await fetch('/api/matrix', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/matrix", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           available: apiInput.available,
           allocation: apiInput.allocation,
@@ -157,7 +119,9 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
       // Handle API errors
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+        throw new Error(
+          errorData.detail || `HTTP error! status: ${response.status}`
+        );
       }
 
       // Process successful response
@@ -171,7 +135,10 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
       }
     } catch (e) {
       // Handle errors
-      const message = e instanceof Error ? e.message : 'Failed to detect deadlock with matrix.';
+      const message =
+        e instanceof Error
+          ? e.message
+          : "Failed to detect deadlock with matrix.";
       set({ error: message });
       console.error("Matrix deadlock detection error:", e);
     } finally {
@@ -179,231 +146,73 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
     }
   },
 
-  // Placeholder for RAG update implementation
-  updateRAGForCurrentStep: () => {
-    const { simulationType, currentStep } = get();
-    const wfgResult = get().wfgSimulationResult;
-    const matrixResult = get().matrixSimulationResult;
+  // Run RL-based deadlock recovery
+  runDeadlockRecovery: async () => {
+    const { detectionType } = get();
+    set({
+      isLoading: true,
+      error: null,
+      currentStep: 0,
+      simulationType: "recovery",
+      wfgSimulationResult: null,
+      matrixSimulationResult: null,
+      recoverySimulationResult: null,
+    });
+    get().stopAnimation();
 
-    if (simulationType === 'wfg' && wfgResult?.simulation?.steps) {
-      const currentStepData = wfgResult.simulation.steps[currentStep];
-      const action = currentStepData.action;
+    // Get input and pad to required dimensions
+    const apiInput: APIInputType = getAPIInput();
+    // Choose endpoint based on detection type
+    const endpoint =
+      detectionType === "wfg"
+        ? "/api/deadlock_recovery_wfg"
+        : "/api/deadlock_recovery";
 
-      if (action === "Converted RAG to WFG") {
-        // Convert RAG to WFG
-        const ragStore = useRAGStore.getState();
-        const ragEdges = ragStore.edges;
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          available: apiInput.available,
+          allocation: apiInput.allocation,
+          request: apiInput.request,
+        }),
+      });
 
-        // Group edges by type
-        const requestEdges = new Map<string, string[]>();
-        const assignEdges = new Map<string, string>();
-
-        ragEdges.forEach(edge => {
-          if (edge.type === 'request') {
-            const requests = requestEdges.get(edge.source) || [];
-            requestEdges.set(edge.source, [...requests, edge.target]);
-          } else if (edge.type === 'allocation') {
-            assignEdges.set(edge.source, edge.target);
-          }
-        });
-
-        // Build WFG edges
-        const wfgEdges: Edge[] = [];
-        requestEdges.forEach((resources, process) => {
-          resources.forEach(resource => {
-            const assignedTo = assignEdges.get(resource);
-            if (assignedTo) {
-              wfgEdges.push({
-                id: `wfg-${process}-${assignedTo}`,
-                source: process,
-                target: assignedTo,
-                type: "wfg",
-                animated: true,
-                data: {},
-                style: {
-                  stroke: "#60a5fa",
-                  strokeWidth: 2,
-                },
-                labelBgStyle: { fill: "#27272a" },
-                labelStyle: { fill: "#e4e4e7" },
-                labelBgPadding: [8, 4] as [number, number],
-                labelBgBorderRadius: 4,
-                markerEnd: {
-                  type: MarkerType.ArrowClosed,
-                  color: "#60a5fa",
-                },
-              });
-            }
-          });
-        });
-
-        // Create process nodes
-        const wfgNodes = ragStore.nodes
-          .filter(node => node.type === 'process')
-          .map(node => ({
-            ...node,
-            position: ragStore.getNodePosition(node.id) || {
-              x: Math.random() * 200,
-              y: Math.random() * 100,
-            },
-          }));
-
-        useRAGStore.getState().setGraph(wfgNodes, wfgEdges);
-
-      } else if (action.match(/P\d+ requested R\d+/)) {
-        // Highlight the requesting edge
-        const [processId, resourceId] = action.match(/P\d+|R\d+/g) || [];
-        if (processId && resourceId) {
-          const currentNodes = useRAGStore.getState().nodes;
-          const currentEdges = useRAGStore.getState().edges.map(edge => {
-            if (edge.source === processId && edge.target === resourceId) {
-              return {
-                ...edge,
-                style: {
-                  stroke: '#60a5fa',
-                  strokeWidth: 3,
-                },
-                animated: true,
-                data: { ...edge.data, highlighted: true },
-                labelBgStyle: { fill: "#27272a" },
-                labelStyle: { fill: "#e4e4e7" },
-                labelBgPadding: [8, 4] as [number, number],
-                labelBgBorderRadius: 4,
-                markerEnd: {
-                  type: MarkerType.ArrowClosed,
-                  color: '#60a5fa',
-                },
-              };
-            }
-            return {
-              ...edge,
-              style: edge.data?.highlighted ? {
-                stroke: '#60a5fa',
-                strokeWidth: 3,
-              } : undefined,
-              labelBgStyle: { fill: "#27272a" },
-              labelStyle: { fill: "#e4e4e7" },
-              labelBgPadding: [8, 4] as [number, number],
-              labelBgBorderRadius: 4,
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-                color: edge.data?.highlighted ? '#60a5fa' : '#a1a1aa',
-              },
-              data: { ...edge.data }
-            };
-          });
-          useRAGStore.getState().setGraph(currentNodes, currentEdges);
-        }
-      } else {
-        // Default RAG view with cycle highlighting if detected
-        useRAGStore.getState().clearGraph();
-        useRAGStore.getState().clearGraph();
-        useRAGStore.getState().updateGraphFromSimulator();
-      }
-    } else if (simulationType === 'matrix' && matrixResult?.simulation?.steps) {
-      const currentStepData = matrixResult.simulation.steps[currentStep];
-      const action = currentStepData.action;
-
-      // Initial state - show the full RAG
-      if (action === "Initial State") {
-        useRAGStore.getState().updateGraphFromSimulator();
-        return;
-      }
-
-      // Process completion step
-      const processMatch = action.match(/Process P(\d+) can finish/);
-      if (processMatch) {
-        const finishedProcessId = `P${processMatch[1]}`;
-        const ragStore = useRAGStore.getState();
-
-        // Get all nodes except the finished process
-        const remainingNodes = ragStore.nodes.filter(node =>
-          node.id !== finishedProcessId && node.type !== 'resource'
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.detail || `HTTP error! status: ${response.status}`
         );
-
-        // Keep all resource nodes
-        const resourceNodes = ragStore.nodes.filter(node => node.type === 'resource').map(node => ({
-          ...node,
-          style: {
-            ...node.style,
-            opacity: 1
-          }
-        }));
-
-        // Get all edges except those connected to the finished process
-        const remainingEdges = ragStore.edges.filter(edge =>
-          edge.source !== finishedProcessId && edge.target !== finishedProcessId
-        ).map(edge => ({
-          ...edge,
-          style: {
-            ...edge.style,
-            opacity: 1
-          }
-        }));
-
-        // Update work vector visualization if available
-        if (currentStepData.work) {
-          resourceNodes.forEach((node) => {
-            const workAmount = currentStepData.work?.[parseInt(node.id.slice(1))];
-            if (workAmount !== undefined) {
-              node.data = {
-                ...node.data,
-                work: workAmount
-              };
-            }
-          });
-        }
-
-        // Highlight finished processes in the finish vector
-        const updatedNodes = [...resourceNodes, ...remainingNodes].map(node => {
-          if (node.type === 'process' && currentStepData.finish?.[parseInt(node.id.slice(1))]) {
-            return {
-              ...node,
-              style: {
-                ...node.style,
-                backgroundColor: '#22c55e',
-                color: 'white'
-              }
-            };
-          }
-          return node;
-        });
-
-        // Set the updated graph with removed node
-        useRAGStore.getState().setGraph(updatedNodes, remainingEdges);
       }
 
-      // Final step - show completion message
-      if (action === "Deadlock Check Completed") {
-        const result = currentStepData.result;
-        const isDeadlocked = result !== "No Deadlock";
-
-        // Update node styles based on final state
-        const ragStore = useRAGStore.getState();
-        const finalNodes = ragStore.nodes.map(node => ({
-          ...node,
-          style: {
-            ...node.style,
-            backgroundColor: isDeadlocked ? '#ef4444' : '#22c55e',
-            color: 'white',
-            opacity: 1
-          }
-        }));
-
-        // Update edge styles based on final state
-        const finalEdges = ragStore.edges.map(edge => ({
-          ...edge,
-          style: {
-            ...edge.style,
-            stroke: isDeadlocked ? '#ef4444' : '#22c55e',
-            opacity: 1
-          },
-          animated: isDeadlocked
-        }));
-
-        useRAGStore.getState().setGraph(finalNodes, finalEdges);
-      }
+      const result: RecoverySimulationResponse = await response.json();
+      set({
+        recoverySimulationResult: result,
+        totalSteps: result.response?.length || 0,
+      });
+      // No RAG update needed for now
+    } catch (e) {
+      const message =
+        e instanceof Error ? e.message : "Failed to run deadlock recovery.";
+      set({ error: message });
+      console.error("Recovery simulation error:", e);
+    } finally {
+      set({ isLoading: false });
     }
+  },
+
+  // Update RAG visualization for current simulation step
+  updateRAGForCurrentStep: () => {
+    const { simulationType } = get();
+    if (simulationType === "recovery") return; // Skip for recovery for now
+    const { currentStep, wfgSimulationResult, matrixSimulationResult } = get();
+    updateRAGVisualization(
+      simulationType as "wfg" | "matrix" | null,
+      currentStep,
+      wfgSimulationResult,
+      matrixSimulationResult
+    );
   },
 
   // Navigate to specific step
