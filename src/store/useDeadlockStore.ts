@@ -183,6 +183,7 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
   updateRAGForCurrentStep: () => {
     const { simulationType, currentStep } = get();
     const wfgResult = get().wfgSimulationResult;
+    const matrixResult = get().matrixSimulationResult;
 
     if (simulationType === 'wfg' && wfgResult?.simulation?.steps) {
       const currentStepData = wfgResult.simulation.steps[currentStep];
@@ -299,9 +300,109 @@ export const useDeadlockStore = create<DeadlockStore>((set, get) => ({
         useRAGStore.getState().clearGraph();
         useRAGStore.getState().updateGraphFromSimulator();
       }
-    } else if (simulationType === 'matrix') {
-      // Matrix simulation visualization will be implemented later
-      useRAGStore.getState().updateGraphFromSimulator();
+    } else if (simulationType === 'matrix' && matrixResult?.simulation?.steps) {
+      const currentStepData = matrixResult.simulation.steps[currentStep];
+      const action = currentStepData.action;
+
+      // Initial state - show the full RAG
+      if (action === "Initial State") {
+        useRAGStore.getState().updateGraphFromSimulator();
+        return;
+      }
+
+      // Process completion step
+      const processMatch = action.match(/Process P(\d+) can finish/);
+      if (processMatch) {
+        const finishedProcessId = `P${processMatch[1]}`;
+        const ragStore = useRAGStore.getState();
+
+        // Get all nodes except the finished process
+        const remainingNodes = ragStore.nodes.filter(node =>
+          node.id !== finishedProcessId && node.type !== 'resource'
+        );
+
+        // Keep all resource nodes
+        const resourceNodes = ragStore.nodes.filter(node => node.type === 'resource').map(node => ({
+          ...node,
+          style: {
+            ...node.style,
+            opacity: 1
+          }
+        }));
+
+        // Get all edges except those connected to the finished process
+        const remainingEdges = ragStore.edges.filter(edge =>
+          edge.source !== finishedProcessId && edge.target !== finishedProcessId
+        ).map(edge => ({
+          ...edge,
+          style: {
+            ...edge.style,
+            opacity: 1
+          }
+        }));
+
+        // Update work vector visualization if available
+        if (currentStepData.work) {
+          resourceNodes.forEach((node) => {
+            const workAmount = currentStepData.work?.[parseInt(node.id.slice(1))];
+            if (workAmount !== undefined) {
+              node.data = {
+                ...node.data,
+                work: workAmount
+              };
+            }
+          });
+        }
+
+        // Highlight finished processes in the finish vector
+        const updatedNodes = [...resourceNodes, ...remainingNodes].map(node => {
+          if (node.type === 'process' && currentStepData.finish?.[parseInt(node.id.slice(1))]) {
+            return {
+              ...node,
+              style: {
+                ...node.style,
+                backgroundColor: '#22c55e',
+                color: 'white'
+              }
+            };
+          }
+          return node;
+        });
+
+        // Set the updated graph with removed node
+        useRAGStore.getState().setGraph(updatedNodes, remainingEdges);
+      }
+
+      // Final step - show completion message
+      if (action === "Deadlock Check Completed") {
+        const result = currentStepData.result;
+        const isDeadlocked = result !== "No Deadlock";
+
+        // Update node styles based on final state
+        const ragStore = useRAGStore.getState();
+        const finalNodes = ragStore.nodes.map(node => ({
+          ...node,
+          style: {
+            ...node.style,
+            backgroundColor: isDeadlocked ? '#ef4444' : '#22c55e',
+            color: 'white',
+            opacity: 1
+          }
+        }));
+
+        // Update edge styles based on final state
+        const finalEdges = ragStore.edges.map(edge => ({
+          ...edge,
+          style: {
+            ...edge.style,
+            stroke: isDeadlocked ? '#ef4444' : '#22c55e',
+            opacity: 1
+          },
+          animated: isDeadlocked
+        }));
+
+        useRAGStore.getState().setGraph(finalNodes, finalEdges);
+      }
     }
   },
 
