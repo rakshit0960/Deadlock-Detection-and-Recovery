@@ -16,6 +16,7 @@ type SimulatorState = {
   allocate: (allocation: Allocation) => void;
   request: (request: Request) => void;
   reset: () => void;
+  clearAll: () => void;
 };
 
 export const useSimulatorStore = create<SimulatorState>((set) => ({
@@ -102,6 +103,14 @@ export const useSimulatorStore = create<SimulatorState>((set) => ({
     })),
 
   reset: () =>
+    set({
+      processes: [],
+      resources: [],
+      allocations: [],
+      requests: [],
+    }),
+
+  clearAll: () =>
     set({
       processes: [],
       resources: [],

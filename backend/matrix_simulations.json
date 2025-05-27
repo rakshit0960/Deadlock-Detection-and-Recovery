@@ -4981,5 +4981,211 @@
                 ]
             }
         ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [],
+                "allocation": [
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                ],
+                "request": [
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
+    },
+    {
+        "simulation_id": "matrix_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial State",
+                "available": [],
+                "allocation": [
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                ],
+                "request": [
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                ],
+                "finish": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 1,
+                "action": "Process P0 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 2,
+                "action": "Process P1 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    false,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 3,
+                "action": "Process P2 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    false
+                ]
+            },
+            {
+                "step": 4,
+                "action": "Process P3 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            },
+            {
+                "step": 5,
+                "action": "Process P4 can finish. Resources released.",
+                "work": [],
+                "finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            },
+            {
+                "step": 6,
+                "action": "Deadlock Check Completed",
+                "result": "No Deadlock",
+                "final_finish": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                ]
+            }
+        ]
     }
 ]

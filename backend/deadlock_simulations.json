@@ -11116,5 +11116,349 @@
                 }
             }
         ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 1,
+                "action": "P0 requested R0",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0"
+                    ]
+                }
+            },
+            {
+                "step": 2,
+                "action": "P0 requested R1",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0",
+                        "R1"
+                    ]
+                }
+            },
+            {
+                "step": 3,
+                "action": "Converted RAG to WFG",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 4,
+                "action": "No cycle found",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 1,
+                "action": "P0 requested R0",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0"
+                    ]
+                }
+            },
+            {
+                "step": 2,
+                "action": "P0 requested R1",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0",
+                        "R1"
+                    ]
+                }
+            },
+            {
+                "step": 3,
+                "action": "Converted RAG to WFG",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 4,
+                "action": "No cycle found",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 1,
+                "action": "P0 requested R0",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0"
+                    ]
+                }
+            },
+            {
+                "step": 2,
+                "action": "P0 requested R1",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0",
+                        "R1"
+                    ]
+                }
+            },
+            {
+                "step": 3,
+                "action": "Converted RAG to WFG",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 4,
+                "action": "No cycle found",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 1,
+                "action": "P0 requested R0",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0"
+                    ]
+                }
+            },
+            {
+                "step": 2,
+                "action": "P0 requested R1",
+                "graph": {
+                    "R0": [
+                        "P1"
+                    ],
+                    "R1": [
+                        "P1"
+                    ],
+                    "P0": [
+                        "R0",
+                        "R1"
+                    ]
+                }
+            },
+            {
+                "step": 3,
+                "action": "Converted RAG to WFG",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            },
+            {
+                "step": 4,
+                "action": "No cycle found",
+                "graph": {
+                    "P0": [
+                        "P1"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {}
+            },
+            {
+                "step": 1,
+                "action": "Converted RAG to WFG",
+                "graph": {}
+            },
+            {
+                "step": 2,
+                "action": "No cycle found",
+                "graph": {}
+            }
+        ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {}
+            },
+            {
+                "step": 1,
+                "action": "Converted RAG to WFG",
+                "graph": {}
+            },
+            {
+                "step": 2,
+                "action": "No cycle found",
+                "graph": {}
+            }
+        ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {}
+            },
+            {
+                "step": 1,
+                "action": "Converted RAG to WFG",
+                "graph": {}
+            },
+            {
+                "step": 2,
+                "action": "No cycle found",
+                "graph": {}
+            }
+        ]
+    },
+    {
+        "simulation_id": "wfg_sim_frontend",
+        "steps": [
+            {
+                "step": 0,
+                "action": "Initial Resource Allocation",
+                "graph": {}
+            },
+            {
+                "step": 1,
+                "action": "Converted RAG to WFG",
+                "graph": {}
+            },
+            {
+                "step": 2,
+                "action": "No cycle found",
+                "graph": {}
+            }
+        ]
     }
 ]
